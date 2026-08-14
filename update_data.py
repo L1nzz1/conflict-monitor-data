@@ -70,7 +70,7 @@ def fetch_news():
 
 
 def call_agnes(conflicts, news):
-    brief = '\n'.join(f"- [{c['id']}] {c['name']}：当前状态「{c['status']}」，年内死亡估算 {c['deaths']}，投入兵力估算 {c['troops']}")
+    brief = '\n'.join(f"- [{c['id']}] {c['name']}：当前状态「{c['status']}」，年内死亡估算 {c['deaths']}，投入兵力估算 {c['troops']}" for c in conflicts)
     headlines = '\n'.join(f"- ({n['src']}) {n['title']}" for n in news)
     prompt = f"""你是全球冲突态势监测员。以下是当前各冲突的已知数据：
 
