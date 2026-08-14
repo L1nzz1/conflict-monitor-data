@@ -57,9 +57,9 @@ def fetch_tile(tl_lat, tl_lon):
     n = int(round(np.sqrt(len(raw) / 2)))
     a = np.frombuffer(raw, dtype='>i2').reshape(n, n).astype(np.float32)
     a[a <= -1000] = 0.0  # void
-    if n > 1201:  # 30m 数据（3601）降采样到 ~90m，控制内存
-        step = max(1, n // 1201)
-        a = a[::step, ::step]
+    if n != 1201:  # 统一线性重采样到 1201，兼容 1801/3601 等不同分辨率
+        idx = np.linspace(0, n - 1, 1201).astype(int)
+        a = a[idx][:, idx]
     return tl_lat, tl_lon, a
 
 
