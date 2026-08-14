@@ -46,7 +46,7 @@ REGIONS = {
 
 
 def fetch_tile(tl_lat, tl_lon):
-    """下载一片 1°x1° SRTM3 .hgt.gz，解压为 (1201,1201) float32。"""
+    """下载一片 1°x1° .hgt.gz，自动识别分辨率并降采样到 ~90m（1201 边）。"""
     ns = 'N' if tl_lat >= 0 else 'S'
     ew = 'E' if tl_lon >= 0 else 'W'
     name = f'{ns}{abs(tl_lat):02d}{ew}{abs(tl_lon):03d}'
@@ -54,8 +54,12 @@ def fetch_tile(tl_lat, tl_lon):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req, timeout=120) as r:
         raw = gzip.decompress(r.read())
-    a = np.frombuffer(raw, dtype='>i2').reshape(1201, 1201).astype(np.float32)
+    n = int(round(np.sqrt(len(raw) / 2)))
+    a = np.frombuffer(raw, dtype='>i2').reshape(n, n).astype(np.float32)
     a[a <= -1000] = 0.0  # void
+    if n > 1201:  # 30m 数据（3601）降采样到 ~90m，控制内存
+        step = max(1, n // 1201)
+        a = a[::step, ::step]
     return tl_lat, tl_lon, a
 
 
