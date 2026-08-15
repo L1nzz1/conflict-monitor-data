@@ -17,9 +17,11 @@ jobs:
       - name: Install CJK font
         run: sudo apt-get update && sudo apt-get install -y fonts-wqy-microhei
       - name: Install python deps
-        run: pip install numpy matplotlib
+        run: pip install numpy matplotlib tifffile pillow
       - name: Render terrain hillshade
         run: python terrain/render_terrain.py all
+      - name: Render global basemap
+        run: python terrain/render_basemap.py
       - name: Commit if changed
         run: |
           git add terrain/
