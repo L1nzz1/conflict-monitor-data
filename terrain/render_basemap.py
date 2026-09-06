@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""云端渲染全球彩色地势底图（Natural Earth Cross-blended Hypsometric Tint）。
-下载 HYP_50M_SR_W（等距圆柱投影的全球彩色地势 + 山体阴影 + 海洋）→ 转 PNG。
-输出：terrain/basemap.png
+"""云端渲染全球彩色地势底图（Natural Earth Cross-blended Hypsometric Tints）。
+1:10m 高分辨率源（21600x10800，含海底分层）→ 降采样到 5400 宽 → JPEG。
+输出：terrain/basemap.jpg
 """
 import urllib.request, zipfile, io, os
 import numpy as np
 from PIL import Image
 import tifffile
 
-URL = 'https://naciscdn.org/naturalearth/50m/raster/HYP_50M_SR_W.zip'
+URL = 'https://naciscdn.org/naturalearth/10m/raster/HYP_HR_SR_OB_DR.zip'
 BASE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(BASE, 'basemap.png')
-TARGET_W = 2700  # 输出宽度（像素）
+OUT = os.path.join(BASE, 'basemap.jpg')
+TARGET_W = 5400  # 输出宽度（像素），为旧版 2700 的两倍
 
-req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0'})
-print('downloading HYP_50M_SR_W.zip ...', flush=True)
-data = urllib.request.urlopen(req, timeout=300).read()
+req = urllib.request.Request(URL, headers={'User-Agent': 'Mozilla/5.0 conflict-monitor-bot'})
+print('downloading HYP_HR_SR_OB_DR.zip (1:10m, large) ...', flush=True)
+data = urllib.request.urlopen(req, timeout=900).read()
 print('downloaded', len(data), 'bytes', flush=True)
 
 z = zipfile.ZipFile(io.BytesIO(data))
@@ -37,5 +37,5 @@ H, W = arr.shape[:2]
 if W > TARGET_W:
     th = max(1, int(H * TARGET_W / W))
     img = img.resize((TARGET_W, th), Image.LANCZOS)
-img.save(OUT, 'PNG', optimize=True)
+img.save(OUT, 'JPEG', quality=88, optimize=True, progressive=True)
 print('OK', OUT, os.path.getsize(OUT), 'bytes, size', img.size, flush=True)
