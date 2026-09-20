@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, 'data.json')
 
 AGNES_BASE = os.environ.get('AGNES_BASE', 'https://apihub.agnes-ai.com/v1')
-AGNES_MODEL = os.environ.get('AGNES_MODEL', 'agnes-2.5-flash')
+AGNES_MODEL = os.environ.get('AGNES_MODEL', 'agnes-3.0-flash')
 AGNES_API_KEY = os.environ.get('AGNES_API_KEY', '')
 
 FEEDS = [
