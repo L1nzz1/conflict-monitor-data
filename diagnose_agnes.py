@@ -5,8 +5,8 @@
 """
 import json, os, urllib.request, urllib.error
 
-BASE = os.environ.get('AGNES_BASE', 'https://apihub.agnes-ai.com/v1').rstrip('/')
-KEY = os.environ.get('AGNES_API_KEY', '')
+BASE = (os.environ.get('AGNES_BASE') or 'https://apihub.agnes-ai.com/v1').rstrip('/')
+KEY = os.environ.get('AGNES_API_KEY') or ''
 HDRS = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + KEY}
 
 
