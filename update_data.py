@@ -22,6 +22,8 @@ AGNES_API_KEY = os.environ.get('AGNES_API_KEY', '')
 FEEDS = [
     ('BBC', 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml'),
     ('卫报', 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.theguardian.com%2Fworld%2Frss'),
+    ('新浪国际', 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.sina.com.cn%2Fnews%2Fworld%2Ffocus15.xml'),
+    ('中新网', 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.chinanews.com.cn%2Frss%2Fscroll-news.xml'),
 ]
 
 # 冲突关键词（与网页端 NEWS_KW 一致思路）
